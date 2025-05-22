@@ -53,7 +53,7 @@ public class view extends javax.swing.JFrame {
         estudiantes = gson.fromJson(json, listType);
 
         for (Estudiante estudiante : this.estudiantes) {
-                        cbxEst.addItem(estudiante.nombre+" "+estudiante.apellido);
+            cbxEst.addItem(estudiante.nombre + " " + estudiante.apellido);
 
             model.addRow(new Object[]{
                 estudiante.cedula,
@@ -90,16 +90,15 @@ public class view extends javax.swing.JFrame {
 
         Estudiante estu = gson.fromJson(json, Estudiante.class);
 
-  
-            model.addRow(new Object[]{
-                estu.cedula,
-                estu.nombre,
-                estu.apellido,
-                estu.direccion,
-                estu.telefono
-            
-            });
-        
+        model.addRow(new Object[]{
+            estu.cedula,
+            estu.nombre,
+            estu.apellido,
+            estu.direccion,
+            estu.telefono
+
+        });
+
         this.jtblEstudiants.setModel(model);
 
     }
@@ -183,6 +182,12 @@ public class view extends javax.swing.JFrame {
         txtnombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtnombreActionPerformed(evt);
+            }
+        });
+
+        cbxEst.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxEstActionPerformed(evt);
             }
         });
 
@@ -286,6 +291,10 @@ public class view extends javax.swing.JFrame {
             Logger.getLogger(view.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnbuscarActionPerformed
+
+    private void cbxEstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxEstActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxEstActionPerformed
 
     /**
      * @param args the command line arguments
