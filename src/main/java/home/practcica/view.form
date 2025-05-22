@@ -40,19 +40,19 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="txtcedula1" min="-2" pref="229" max="-2" attributes="0"/>
+                          <Component id="txtcedulabuscar" min="-2" pref="229" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Component id="txtcedula" min="-2" pref="124" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="txtcedula3" min="-2" pref="113" max="-2" attributes="0"/>
+                              <Component id="txtnombre" min="-2" pref="113" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="txtcedula2" min="-2" pref="113" max="-2" attributes="0"/>
+                              <Component id="txtapellido" min="-2" pref="113" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="txtcedula5" min="-2" pref="113" max="-2" attributes="0"/>
+                      <Component id="txtdireccion" min="-2" pref="113" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="txtcedula4" min="-2" pref="113" max="-2" attributes="0"/>
+                      <Component id="txttelefono" min="-2" pref="113" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace pref="33" max="32767" attributes="0"/>
@@ -65,16 +65,16 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="266" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-              <Component id="txtcedula1" min="-2" max="-2" attributes="0"/>
+              <Component id="txtcedulabuscar" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="btnbuscar" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="60" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="txtcedula" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtcedula2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtcedula3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtcedula5" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtcedula4" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtapellido" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtnombre" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtdireccion" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txttelefono" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="btnguardar" min="-2" max="-2" attributes="0"/>
@@ -109,26 +109,35 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Agregar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnguardarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnbuscar">
       <Properties>
         <Property name="text" type="java.lang.String" value="buscar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnbuscarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtcedula">
     </Component>
-    <Component class="javax.swing.JTextField" name="txtcedula1">
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtcedula2">
-    </Component>
-    <Component class="javax.swing.JTextField" name="txtcedula3">
+    <Component class="javax.swing.JTextField" name="txtcedulabuscar">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtcedula3ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtcedulabuscarActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtcedula4">
+    <Component class="javax.swing.JTextField" name="txtapellido">
     </Component>
-    <Component class="javax.swing.JTextField" name="txtcedula5">
+    <Component class="javax.swing.JTextField" name="txtnombre">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtnombreActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txttelefono">
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtdireccion">
     </Component>
   </SubComponents>
 </Form>

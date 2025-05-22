@@ -15,28 +15,30 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author 
+ * @author
  */
 public class view extends javax.swing.JFrame {
 
+    private Estudiante actual;
     private ArrayList<Estudiante> estudiantes;
     private String url = "http://localhost/SOA11/SOA/controllers/apirest.php";
-    private HttpClient cliente=HttpClient.newHttpClient();
-    Gson gson =new Gson();
-   
+    private HttpClient cliente = HttpClient.newHttpClient();
+    Gson gson = new Gson();
+
     public void AxtualizarTabla() throws URISyntaxException, IOException, InterruptedException {
-          DefaultTableModel model = new DefaultTableModel();
+        DefaultTableModel model = new DefaultTableModel();
 
         model.addColumn("cedula");
         model.addColumn("nombre");
         model.addColumn("apellido");
         model.addColumn("direccion");
         model.addColumn("telefono");
-        
+
         HttpRequest getR = HttpRequest.newBuilder()
                 .uri(new URI(this.url))
                 .header("Content-type", "application/json")
@@ -48,9 +50,9 @@ public class view extends javax.swing.JFrame {
 
         java.lang.reflect.Type listType = new TypeToken<ArrayList<Estudiante>>() {
         }.getType();
-       estudiantes = gson.fromJson(json, listType);
+        estudiantes = gson.fromJson(json, listType);
 
-     for (Estudiante estudiante : this.estudiantes) {
+        for (Estudiante estudiante : this.estudiantes) {
             model.addRow(new Object[]{
                 estudiante.cedula,
                 estudiante.nombre,
@@ -61,7 +63,43 @@ public class view extends javax.swing.JFrame {
             });
         }
         this.jtblEstudiants.setModel(model);
-   
+
+    }
+
+    public void actualizarTablaEstudiante() throws URISyntaxException, IOException, InterruptedException {
+        DefaultTableModel model = new DefaultTableModel();
+
+        model.addColumn("cedula");
+        model.addColumn("nombre");
+        model.addColumn("apellido");
+        model.addColumn("direccion");
+        model.addColumn("telefono");
+
+        String fullUrl = url + "?cedula=" + txtcedulabuscar.getText();
+
+        HttpRequest getRequest = HttpRequest.newBuilder()
+                .uri(new URI(fullUrl))
+                .header("Content-type", "application/json")
+                .GET()
+                .build();
+
+        HttpResponse<String> getResponse = cliente.send(getRequest, HttpResponse.BodyHandlers.ofString());
+        String json = getResponse.body();
+
+        Estudiante estu = gson.fromJson(json, Estudiante.class);
+
+  
+            model.addRow(new Object[]{
+                estu.cedula,
+                estu.nombre,
+                estu.apellido,
+                estu.direccion,
+                estu.telefono
+            
+            });
+        
+        this.jtblEstudiants.setModel(model);
+
     }
 
     /**
@@ -69,10 +107,20 @@ public class view extends javax.swing.JFrame {
      */
     public view() throws URISyntaxException, IOException, InterruptedException {
         initComponents();
-AxtualizarTabla();
+        AxtualizarTabla();
     }
 
+    public Estudiante crearEst() {
 
+        String cedula = txtcedula.getText();
+        String nombre = txtnombre.getText();
+        String apellido = txtapellido.getText();
+        String direccion = txtdireccion.getText();
+        String telefono = txttelefono.getText();
+
+        this.actual = new Estudiante(cedula, nombre, apellido, direccion, telefono);
+        return actual;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -88,11 +136,11 @@ AxtualizarTabla();
         btnguardar = new javax.swing.JButton();
         btnbuscar = new javax.swing.JButton();
         txtcedula = new javax.swing.JTextField();
-        txtcedula1 = new javax.swing.JTextField();
-        txtcedula2 = new javax.swing.JTextField();
-        txtcedula3 = new javax.swing.JTextField();
-        txtcedula4 = new javax.swing.JTextField();
-        txtcedula5 = new javax.swing.JTextField();
+        txtcedulabuscar = new javax.swing.JTextField();
+        txtapellido = new javax.swing.JTextField();
+        txtnombre = new javax.swing.JTextField();
+        txttelefono = new javax.swing.JTextField();
+        txtdireccion = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -110,12 +158,28 @@ AxtualizarTabla();
         jScrollPane1.setViewportView(jtblEstudiants);
 
         btnguardar.setText("Agregar");
+        btnguardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnguardarActionPerformed(evt);
+            }
+        });
 
         btnbuscar.setText("buscar");
-
-        txtcedula3.addActionListener(new java.awt.event.ActionListener() {
+        btnbuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtcedula3ActionPerformed(evt);
+                btnbuscarActionPerformed(evt);
+            }
+        });
+
+        txtcedulabuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtcedulabuscarActionPerformed(evt);
+            }
+        });
+
+        txtnombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtnombreActionPerformed(evt);
             }
         });
 
@@ -137,17 +201,17 @@ AxtualizarTabla();
                     .addGroup(layout.createSequentialGroup()
                         .addGap(67, 67, 67)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtcedula1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtcedulabuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txtcedula, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtcedula3, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtcedula2, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txtapellido, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
-                        .addComponent(txtcedula5, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtdireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtcedula4, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txttelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -156,16 +220,16 @@ AxtualizarTabla();
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24)
-                .addComponent(txtcedula1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtcedulabuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnbuscar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtcedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtcedula2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtcedula3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtcedula5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtcedula4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtapellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtdireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txttelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnguardar)
                 .addGap(17, 17, 17))
@@ -174,9 +238,47 @@ AxtualizarTabla();
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtcedula3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcedula3ActionPerformed
+    private void txtnombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnombreActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtcedula3ActionPerformed
+    }//GEN-LAST:event_txtnombreActionPerformed
+
+    private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
+
+        try {
+            String pbody = gson.toJson(this.crearEst());
+            HttpRequest post = HttpRequest.newBuilder()
+                    .uri(new URI(url))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(pbody))
+                    .build();
+            HttpResponse<String> res = cliente.send(post, HttpResponse.BodyHandlers.ofString());
+            JOptionPane.showMessageDialog(null, res);
+            this.AxtualizarTabla();
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(view.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(view.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(view.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btnguardarActionPerformed
+
+    private void txtcedulabuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcedulabuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtcedulabuscarActionPerformed
+
+    private void btnbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscarActionPerformed
+        try {
+            actualizarTablaEstudiante();
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(view.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(view.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(view.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnbuscarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -226,11 +328,11 @@ AxtualizarTabla();
     private javax.swing.JButton btnguardar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jtblEstudiants;
+    private javax.swing.JTextField txtapellido;
     private javax.swing.JTextField txtcedula;
-    private javax.swing.JTextField txtcedula1;
-    private javax.swing.JTextField txtcedula2;
-    private javax.swing.JTextField txtcedula3;
-    private javax.swing.JTextField txtcedula4;
-    private javax.swing.JTextField txtcedula5;
+    private javax.swing.JTextField txtcedulabuscar;
+    private javax.swing.JTextField txtdireccion;
+    private javax.swing.JTextField txtnombre;
+    private javax.swing.JTextField txttelefono;
     // End of variables declaration//GEN-END:variables
 }
